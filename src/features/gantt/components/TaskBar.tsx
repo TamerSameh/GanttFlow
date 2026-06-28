@@ -44,8 +44,8 @@ export const TaskBar = memo(function TaskBar({
     };
   }, []);
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
       if (e.button !== 0) return;
       e.stopPropagation();
       handleTaskClick(taskId, e);
@@ -55,7 +55,7 @@ export const TaskBar = memo(function TaskBar({
   );
 
   const handleDependencyStart = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.PointerEvent) => {
       e.stopPropagation();
       e.preventDefault();
       drawCleanupRef.current?.();
@@ -64,7 +64,7 @@ export const TaskBar = memo(function TaskBar({
       const rect = svg.getBoundingClientRect();
       startDraw(taskId, e.clientX - rect.left, e.clientY - rect.top);
 
-      const handleMove = (ev: MouseEvent) => {
+      const handleMove = (ev: PointerEvent) => {
         updateDraw(ev.clientX - rect.left, ev.clientY - rect.top);
       };
       const handleUp = () => {
@@ -78,20 +78,20 @@ export const TaskBar = memo(function TaskBar({
       };
 
       const cleanup = () => {
-        window.removeEventListener('mousemove', handleMove);
-        window.removeEventListener('mouseup', handleUp);
+        window.removeEventListener('pointermove', handleMove);
+        window.removeEventListener('pointerup', handleUp);
         drawCleanupRef.current = null;
       };
 
-      window.addEventListener('mousemove', handleMove);
-      window.addEventListener('mouseup', handleUp);
+      window.addEventListener('pointermove', handleMove);
+      window.addEventListener('pointerup', handleUp);
       drawCleanupRef.current = cleanup;
     },
     [taskId, startDraw, updateDraw, finishDraw],
   );
 
   const handleProgressClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.PointerEvent) => {
       e.stopPropagation();
       const rect = e.currentTarget.getBoundingClientRect();
       const pct = (e.clientX - rect.left) / rect.width;
@@ -102,7 +102,7 @@ export const TaskBar = memo(function TaskBar({
   );
 
   const handleResizeStart = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.PointerEvent) => {
       e.stopPropagation();
       e.preventDefault();
       onStartResize(taskId, e.clientX, 'end');
@@ -119,7 +119,8 @@ export const TaskBar = memo(function TaskBar({
         ref={barRef}
         data-task-id={taskId}
         className="cursor-pointer"
-        onMouseDown={handleMouseDown}
+        onPointerDown={handlePointerDown}
+        style={{ touchAction: 'none' }}
       >
         <polygon
           points={`${cx},${cy - size / 2} ${cx + size / 2},${cy} ${cx},${cy + size / 2} ${cx - size / 2},${cy}`}
@@ -144,7 +145,8 @@ export const TaskBar = memo(function TaskBar({
       ref={barRef}
       data-task-id={taskId}
       className="cursor-pointer group"
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      style={{ touchAction: 'none' }}
     >
       <rect
         x={barX}
@@ -197,14 +199,16 @@ export const TaskBar = memo(function TaskBar({
         height={TASK_BAR_HEIGHT}
         rx={2}
         className="fill-transparent cursor-ew-resize hover:fill-primary-700/20"
-        onMouseDown={handleResizeStart}
+        onPointerDown={handleResizeStart}
+        style={{ touchAction: 'none' }}
       />
       <circle
         cx={barX + barWidth + 8}
         cy={barY + TASK_BAR_HEIGHT / 2}
         r={5}
         className="fill-transparent cursor-crosshair hover:fill-info-500/40 group-hover:fill-info-500/20"
-        onMouseDown={handleDependencyStart}
+        onPointerDown={handleDependencyStart}
+        style={{ touchAction: 'none' }}
       />
       <rect
         x={barX}
@@ -213,7 +217,8 @@ export const TaskBar = memo(function TaskBar({
         height={4}
         rx={2}
         className="cursor-pointer fill-transparent hover:fill-primary-500/20"
-        onMouseDown={handleProgressClick}
+        onPointerDown={handleProgressClick}
+        style={{ touchAction: 'none' }}
       />
       <title>{`${name} - ${progress}%`}</title>
     </g>

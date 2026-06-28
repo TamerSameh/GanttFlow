@@ -1,5 +1,6 @@
 import { useRef, useState, type ReactNode, useCallback, useEffect } from 'react';
 import { cn } from '@/utils/cn';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 interface PanelGroupProps {
   left: ReactNode;
@@ -18,9 +19,40 @@ export function PanelGroup({
   maxLeftWidth = 600,
   className,
 }: PanelGroupProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const [leftWidth, setLeftWidth] = useState(defaultLeftWidth);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      setContainerWidth(entries[0]?.contentRect.width ?? 0);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const effectiveMin = isMobile && containerWidth > 0
+    ? Math.round(containerWidth * 0.35)
+    : minLeftWidth;
+  const effectiveMax = isMobile && containerWidth > 0
+    ? Math.round(containerWidth * 0.45)
+    : maxLeftWidth;
+
+  useEffect(() => {
+    if (isMobile && containerWidth > 0) {
+      setLeftWidth((prev) => {
+        const maxPx = containerWidth * 0.45;
+        if (prev > maxPx) {
+          return Math.round(containerWidth * 0.40);
+        }
+        return prev;
+      });
+    }
+  }, [isMobile, containerWidth]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,9 +64,9 @@ export function PanelGroup({
       if (!isDragging || !containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const newWidth = e.clientX - rect.left;
-      setLeftWidth(Math.max(minLeftWidth, Math.min(maxLeftWidth, newWidth)));
+      setLeftWidth(Math.max(effectiveMin, Math.min(effectiveMax, newWidth)));
     },
-    [isDragging, minLeftWidth, maxLeftWidth],
+    [isDragging, effectiveMin, effectiveMax],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -76,14 +108,15 @@ export function PanelGroup({
         role="separator"
         aria-orientation="vertical"
         aria-valuenow={leftWidth}
-        aria-valuemin={minLeftWidth}
-        aria-valuemax={maxLeftWidth}
+        aria-valuemin={effectiveMin}
+        aria-valuemax={effectiveMax}
         tabIndex={0}
         onKeyDown={(e) => {
+          const step = isMobile ? 10 : 20;
           if (e.key === 'ArrowLeft') {
-            setLeftWidth((w) => Math.max(minLeftWidth, w - 20));
+            setLeftWidth((w) => Math.max(effectiveMin, w - step));
           } else if (e.key === 'ArrowRight') {
-            setLeftWidth((w) => Math.min(maxLeftWidth, w + 20));
+            setLeftWidth((w) => Math.min(effectiveMax, w + step));
           }
         }}
       />

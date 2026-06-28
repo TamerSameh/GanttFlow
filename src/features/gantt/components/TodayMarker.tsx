@@ -23,13 +23,12 @@ export const TodayMarker = memo(function TodayMarker({
     return daysFromStart * layout.pxPerDay;
   }, [todayMarkerDate, layout]);
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.stopPropagation();
-    e.preventDefault();
     draggingRef.current = true;
     svgRef.current = (e.currentTarget as SVGGElement).closest('svg');
 
-    const handleMove = (ev: MouseEvent) => {
+    const handleMove = (ev: PointerEvent) => {
       if (!draggingRef.current || !svgRef.current) return;
       const rect = svgRef.current.getBoundingClientRect();
       const x = ev.clientX - rect.left;
@@ -41,18 +40,18 @@ export const TodayMarker = memo(function TodayMarker({
     const handleUp = () => {
       draggingRef.current = false;
       svgRef.current = null;
-      window.removeEventListener('mousemove', handleMove);
-      window.removeEventListener('mouseup', handleUp);
+      window.removeEventListener('pointermove', handleMove);
+      window.removeEventListener('pointerup', handleUp);
     };
 
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleUp);
+    window.addEventListener('pointermove', handleMove);
+    window.addEventListener('pointerup', handleUp);
   }, [layout, setTodayMarkerDate]);
 
   if (todayX < 0 || todayX > layout.totalWidth) return null;
 
   return (
-    <g onMouseDown={handleMouseDown} style={{ cursor: 'ew-resize' }}>
+    <g onPointerDown={handlePointerDown} style={{ cursor: 'ew-resize', touchAction: 'none' }}>
       <rect
         x={todayX - 12}
         y={0}

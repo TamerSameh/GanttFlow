@@ -44,8 +44,8 @@ export function useGanttDrag(layout: LayoutResult | null) {
     [tasks, layout, setDragState],
   );
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
+  const handlePointerMove = useCallback(
+    (e: PointerEvent) => {
       if (!dragState || !layout) return;
 
       const dx = e.clientX - dragState.startX;
@@ -80,21 +80,21 @@ export function useGanttDrag(layout: LayoutResult | null) {
     [dragState, layout, moveTask, resizeTask, tasks, setDragState],
   );
 
-  const handleMouseUp = useCallback(() => {
+  const handlePointerUp = useCallback(() => {
     setDragState(null);
   }, [setDragState]);
 
   useEffect(() => {
     if (!dragState) return;
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [dragState, handleMouseMove, handleMouseUp]);
+  }, [dragState, handlePointerMove, handlePointerUp]);
 
   return { startMove, startResize, isDragging: dragState !== null };
 }
