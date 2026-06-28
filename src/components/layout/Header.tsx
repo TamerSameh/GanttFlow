@@ -62,11 +62,11 @@ export function Header() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => useUIStore.getState().setGlobalSearchOpen(true)}
-          className="group hidden h-9 w-64 items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-400 transition-colors hover:border-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500/40 sm:flex dark:border-slate-600 dark:bg-slate-800 dark:text-slate-500 dark:hover:border-slate-500"
+          className="group flex h-9 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-400 transition-colors hover:border-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500/40 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-500 dark:hover:border-slate-500 sm:w-64 sm:justify-start sm:px-3 w-9 px-0"
         >
           <Search className="size-4 shrink-0" />
-          <span className="flex-1 text-left">Search projects, tasks...</span>
-          <kbd className="flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] dark:border-slate-600 dark:bg-slate-700">
+          <span className="hidden flex-1 text-left sm:inline">Search projects, tasks...</span>
+          <kbd className="hidden items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] sm:flex dark:border-slate-600 dark:bg-slate-700">
             <Command className="size-3" />
             /
           </kbd>
