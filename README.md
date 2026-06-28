@@ -1,32 +1,57 @@
-# React + TypeScript + Vite
+![Gantt Flow](./public/banner.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# 📊 Gantt Flow
 
-Currently, two official plugins are available:
+🔗 Live Demo: https://gantt-flow-eta.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🧠 About
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A modern interactive **Gantt chart project management tool** that helps users plan, visualize, and manage tasks using a timeline-based interface.
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## ✨ Features
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+- 📅 Interactive Gantt timeline
+- 🧩 Task creation and organization
+- 🖱️ Drag & drop scheduling
+- 📊 Real-time updates
+- ⚡ Smooth UI interactions
+- 📱 Fully responsive design
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## ⚙️ Tech Stack
+
+- React + TypeScript
+- Vite
+- Zustand
+- Zod
+- Tailwind CSS
+- Vercel
+
+---
+
+## 📁 Project Structure
+
+/src
+  /components
+  /store
+  /hooks
+  /utils
+  /types
+
+---
+
+## 🚀 Purpose
+
+This project focuses on transforming traditional project management into a **visual and interactive experience**, improving clarity and workflow planning.
+
+---
+
+## 👨‍💻 Author
+
+Built by **[Tamer Sameh]**
+Frontend Developer | BIS Student
