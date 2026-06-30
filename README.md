@@ -53,5 +53,6 @@ This project focuses on transforming traditional project management into a **vis
 
 ## 👨‍💻 Author
 
-Built by **[Tamer Sameh]**
+Built by **Tamer Sameh**
+
 Frontend Developer | BIS Student
